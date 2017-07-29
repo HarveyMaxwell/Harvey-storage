@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--Cookie: 在浏览器端保存信息，当再次访问该页面时，浏览器会带上cookie信息，作用标识当前的用户或会话。
+			Cookie 有过期时间
+		-->
+		<script type="text/javascript">
+			//浏览器把Cookie信息保存到文件，我们可以通过document.cookie来访问
+			console.log(document.cookie)
+			
+			//cookie的格式: 使用分号加空格分开各个cookie；
+			//key=value expires = 时间; key = value; key = value;
+			//Cookie的默认过期时间是session,当把网页或者是浏览器关闭后，保存的信息就会自动删除。
+			// 保存cookie
+			function setCookie(name,value,day){
+				var date = new Date();
+				//计算多少天后的日期
+				date.setTime(date.getTime()+day*24*60*60*1000);
+				//把日期转成格林尼治的时间
+				var dateString = date.toGMTString();
+				document.cookie = name + "="+value+";expires="+dateString;
+					
+			}
+			setCookie("testKey","testValue",10);
+			setCookie("1703","HTML5",10);
+			setCookie("1704","Java",10);
+			console.log(document.cookie);
+			//从Cookie中查找key对应的value
+			function searchCookie(name){
+				var array = document.cookie.split("; ");
+				//数组中每一项都是key=value;
+				for(var i = 0 ; i < array.length ;i++){
+					var item = array[i];
+					//把其中的每一项在使用等号切分，数组中前面是key后面是value
+					var array2 = item.split("=");
+					if(array2[0] == name){
+						return array2[1];
+					}
+				}
+			
+			}
+				var result = searchCookie("1703");
+				console.log(result);	
+				
+			//如何删除一个Cookie  要删除一个cookie，就把cookie的过期日期设置为当前之前的时间，譬如昨天
+			//cookie过期后会被删除
+				function deleteCookie (name){
+					//设置过期日期为负值，这样cookie就过期了，过期的cookie会把删除
+					setCookie(name,"",-1);
+				}
+				deleteCookie("1703");
+				console.log(document.cookie);
+		</script>
+		
+		
+		
+	</body>
+</html>
